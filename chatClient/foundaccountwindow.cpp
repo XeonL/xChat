@@ -12,3 +12,13 @@ FoundAccountWindow::~FoundAccountWindow()
 {
     delete ui;
 }
+
+void FoundAccountWindow::on_back_clicked()
+{
+
+}
+
+void FoundAccountWindow::on_foundButton_clicked()
+{
+
+}

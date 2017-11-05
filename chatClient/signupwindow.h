@@ -22,8 +22,10 @@ private slots:
 
 signals:
     void returnBack();
+    void signup(QString &,QString &,QString &,QString &);
 private:
     Ui::SignupWindow *ui;
+    void clear();
 };
 
 #endif // SIGNUPWINDOW_H

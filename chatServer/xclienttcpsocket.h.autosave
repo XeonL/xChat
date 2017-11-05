@@ -1,0 +1,19 @@
+#ifndef XCLIENTTCPSOCKET_H
+#define XCLIENTTCPSOCKET_H
+
+#include <QTcpSocket>
+#include <QObject>
+class xClientTcpSocket : public QTcpSocket
+{
+    Q_OBJECT
+public:
+    explicit xClientTcpSocket(QObject *parent = 0);
+
+private:
+
+
+signals:
+
+};
+
+#endif // XCLIENTTCPSOCKET_H

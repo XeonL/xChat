@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "xclienttcpsocket.h"
+#include "signupwindow.h"
 
 namespace Ui {
 class LoginWindow;
@@ -23,9 +24,12 @@ private slots:
 
     void on_loginButton_clicked();
 
+    void signUpToServer(QString &,QString &,QString &,QString &);
+
 private:
     Ui::LoginWindow *ui;
     xClientTcpSocket *myTcpSocket;
+    SignupWindow *signupWindow;
 };
 
 #endif // LOGINWINDOW_H

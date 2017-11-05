@@ -15,10 +15,16 @@ SignupWindow::~SignupWindow()
 
 void SignupWindow::on_back_clicked()
 {
-
+    ui->nickName->setText("");
+    ui->password->setText("");
+    ui->username->setText("");
+    ui->stuNum->setText("");
+    this->hide();
+    emit returnBack();
 }
 
 void SignupWindow::on_signup_clicked()
 {
-
+    emit signup(ui->username->text(),ui->nickName->text(),
+                ui->password->text(),ui->stuNum->text());
 }

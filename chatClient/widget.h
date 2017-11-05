@@ -22,7 +22,6 @@ private slots:
     void on_connectButton_clicked();
     void beginLogin();
 
-
 private:
     Ui::Widget *ui;
     xClientTcpSocket *myTcpSocket;

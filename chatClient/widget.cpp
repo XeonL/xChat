@@ -7,6 +7,7 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     myTcpSocket = new xClientTcpSocket(this);
+    loginWindow = new LoginWindow(myTcpSocket);
     connect(myTcpSocket,SIGNAL(connected()),this,SLOT(beginLogin()));
 
 }
@@ -23,7 +24,7 @@ void Widget::on_connectButton_clicked()
                                ui->portText->text().toInt());
 }
 void Widget::beginLogin() {
-    loginWindow = new LoginWindow(myTcpSocket);
+
 
     loginWindow->show();
     this->hide();

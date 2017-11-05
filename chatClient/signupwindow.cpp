@@ -1,8 +1,8 @@
 #include "signupwindow.h"
 #include "ui_signupwindow.h"
 
-SignupWindow::SignupWindow(QWidget *parent) :
-    QWidget(parent),
+SignupWindow::SignupWindow(xClientTcpSocket *socket,QWidget *parent) :
+    QWidget(parent),myTcpSocket(socket),
     ui(new Ui::SignupWindow)
 {
     ui->setupUi(this);
@@ -23,14 +23,12 @@ void SignupWindow::on_back_clicked()
 void SignupWindow::on_signup_clicked()
 {
 
-    emit signup(ui->username->text(),ui->nickName->text(),
-                ui->password->text(),ui->stuNum->text());
 
 }
 
-void clear() {
-    ui->nickName->setText("");
-    ui->password->setText("");
-    ui->username->setText("");
-    ui->stuNum->setText("");
+void SignupWindow::clear() {
+    ui->nickName->clear();
+    ui->password->clear();
+    ui->username->clear();
+    ui->stuNum->clear();
 }

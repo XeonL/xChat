@@ -9,9 +9,10 @@ LoginWindow::LoginWindow(xClientTcpSocket *socket,QWidget *parent) :
     ui->setupUi(this);
     //设置密码框非明文显示
     ui->password->setEchoMode(QLineEdit::Password);
-    signupWindow = new SignupWindow();
+    signupWindow = new SignupWindow(myTcpSocket);
+    foundAccountWindow = new FoundAccountWindow(myTcpSocket);
     connect(signupWindow,SIGNAL(returnBack()),this,SLOT(show()));
-    connect(signupWindow,SIGNAL(signup(QString&,QString&,QString&,QString&)),this,SLOT(signUpToServer(QString&,QString&,QString&,QString&)));
+    connect(foundAccountWindow,SIGNAL(returnBack()),this,SLOT(show()));
 }
 
 LoginWindow::~LoginWindow()
@@ -28,7 +29,8 @@ void LoginWindow::on_signUpButton_clicked()
 
 void LoginWindow::on_foundPasswordButton_clicked()
 {
-
+    foundAccountWindow->show();
+    this->hide();
 }
 
 void LoginWindow::on_loginButton_clicked()
@@ -36,7 +38,4 @@ void LoginWindow::on_loginButton_clicked()
 
 }
 
-void signUpToServer(QString &,QString &,QString &,QString &) {
-
-}
 

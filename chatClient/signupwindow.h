@@ -2,6 +2,7 @@
 #define SIGNUPWINDOW_H
 
 #include <QWidget>
+#include "xclienttcpsocket.h"
 
 namespace Ui {
 class SignupWindow;
@@ -12,7 +13,7 @@ class SignupWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit SignupWindow(QWidget *parent = 0);
+    explicit SignupWindow(xClientTcpSocket *, QWidget *parent = 0);
     ~SignupWindow();
 
 private slots:
@@ -22,9 +23,9 @@ private slots:
 
 signals:
     void returnBack();
-    void signup(QString &,QString &,QString &,QString &);
 private:
     Ui::SignupWindow *ui;
+    xClientTcpSocket *myTcpSocket;
     void clear();
 };
 

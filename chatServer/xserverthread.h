@@ -4,8 +4,10 @@
 
 class xServerThread : public QThread
 {
+    Q_OBJECT
 public:
     xServerThread();
+    void run();
 };
 
 #endif // XSERVERTHREAD_H

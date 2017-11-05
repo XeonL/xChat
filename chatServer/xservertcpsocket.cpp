@@ -1,6 +1,6 @@
 #include "xservertcpsocket.h"
 
-xServerTcpSocket::xServerTcpSocket(QObject *parent = 0) :
+xServerTcpSocket::xServerTcpSocket(QObject *parent) :
         QTcpSocket(parent)
 {
 

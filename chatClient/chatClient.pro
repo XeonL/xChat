@@ -25,10 +25,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        widget.cpp
+        widget.cpp \
+    xclienttcpsocket.cpp \
+    xclientudpsocket.cpp \
+    loginwindow.cpp \
+    signupwindow.cpp \
+    foundaccountwindow.cpp
 
 HEADERS += \
-        widget.h
+        widget.h \
+    xclienttcpsocket.h \
+    xclientudpsocket.h \
+    loginwindow.h \
+    signupwindow.h \
+    foundaccountwindow.h
 
 FORMS += \
-        widget.ui
+        widget.ui \
+    loginwindow.ui \
+    signupwindow.ui \
+    foundaccountwindow.ui

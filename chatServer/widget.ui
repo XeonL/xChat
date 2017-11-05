@@ -48,8 +48,25 @@
     <string>开始监听</string>
    </property>
   </widget>
+  <widget class="QLabel" name="listenStatus">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>150</y>
+     <width>201</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
   <zorder>listenButton</zorder>
   <zorder>label</zorder>
+  <zorder>listenStatus</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

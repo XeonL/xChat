@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QtNetwork>
+#include "xtcpserver.h"
 
 namespace Ui {
 class Widget;
@@ -17,11 +18,13 @@ public:
     ~Widget();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_listenButton_clicked();
+    void updateListenStatus(const QString &);
+
 
 private:
     Ui::Widget *ui;
-    QTcpServer *
+    xTcpServer *myTcpServer;
 
 };
 

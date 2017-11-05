@@ -4,3 +4,6 @@ xServerThread::xServerThread()
 {
 
 }
+void xServerThread::run() {
+
+}

@@ -1,6 +1,8 @@
 #include "xtcpserver.h"
-# include <QObject>
-# include <QDebug>
+#include <QObject>
+#include <QDebug>
+#include "xserverthread.h"
+#include "xservertcpsocket.h"
 xTcpServer::xTcpServer(QObject *parent) :
     QTcpServer(parent)
 {
@@ -20,4 +22,9 @@ void xTcpServer::startServer() {
 
 void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     qDebug() << socketDescriptor << " Connecting...";
+    xServerThread *thread = new xServerThread(socketDescriptor,this);
+
+    connect(thread,SIGNAL(finished()),thread,SLOT(deleteLater()));
+    thread->start();
+
 }

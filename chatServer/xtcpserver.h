@@ -16,6 +16,7 @@ signals:
     void listenStatusChange(const QString &status);
 protected:
     void incomingConnection(qintptr socketDescriptor);
+private:
 
 };
 

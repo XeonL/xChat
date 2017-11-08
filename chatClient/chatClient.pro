@@ -30,7 +30,8 @@ SOURCES += \
     xclientudpsocket.cpp \
     loginwindow.cpp \
     signupwindow.cpp \
-    foundaccountwindow.cpp
+    foundaccountwindow.cpp \
+    message.cpp
 
 HEADERS += \
         widget.h \
@@ -38,10 +39,12 @@ HEADERS += \
     xclientudpsocket.h \
     loginwindow.h \
     signupwindow.h \
-    foundaccountwindow.h
+    foundaccountwindow.h \
+    message.h
 
 FORMS += \
         widget.ui \
     loginwindow.ui \
     signupwindow.ui \
-    foundaccountwindow.ui
+    foundaccountwindow.ui \
+    message.ui

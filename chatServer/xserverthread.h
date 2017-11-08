@@ -8,6 +8,7 @@ class xServerThread : public QThread
 public:
     xServerThread(qintptr descriptor,QObject *parent = 0);
     void run();
+
 private:
     xServerTcpSocket *myTcpSocket;
     qintptr socketDescriptor;

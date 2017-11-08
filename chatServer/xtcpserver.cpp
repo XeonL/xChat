@@ -4,9 +4,22 @@
 #include "xserverthread.h"
 #include "xservertcpsocket.h"
 xTcpServer::xTcpServer(QObject *parent) :
-    QTcpServer(parent)
+    QTcpServer(parent),threadPool()
 {
 
+}
+xTcpServer::~xTcpServer() {
+//    ~QTcpServer();
+    auto begin = threadPool.begin();
+    auto end = threadPool.end();
+    while(begin!=end) {
+        if(begin) {
+            (*begin)->terminate();
+            delete *begin;
+            (*begin) = nullptr;
+        }
+        begin++;
+    }
 }
 
 void xTcpServer::startServer() {
@@ -23,7 +36,8 @@ void xTcpServer::startServer() {
 void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     qDebug() << socketDescriptor << " Connecting...";
     xServerThread *thread = new xServerThread(socketDescriptor,this);
-
+    //添加入线程池以便程序关闭时结束进程
+    threadPool.append(thread);
     connect(thread,SIGNAL(finished()),thread,SLOT(deleteLater()));
     thread->start();
 

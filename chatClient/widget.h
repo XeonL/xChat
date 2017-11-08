@@ -21,12 +21,14 @@ public:
 private slots:
     void on_connectButton_clicked();
     void beginLogin();
+    void readMessage();
 
 private:
     Ui::Widget *ui;
     xClientTcpSocket *myTcpSocket;
     xClientUdpSocket *myUdpSocket;
     LoginWindow *loginWindow;
+    quint16 blockSize;
 };
 
 #endif // WIDGET_H

@@ -3,9 +3,9 @@
 #define PORT 6666
 
 #include <QTcpServer>
-#include <QVector>
 #include "xservertcpsocket.h"
-#include "xserverthread.h"
+#include <QHash>
+
 
 class xTcpServer : public QTcpServer
 {
@@ -16,10 +16,13 @@ public:
     void startServer();
 signals:
     void listenStatusChange(const QString &status);
+public slots:
+    void addSocket(xServerTcpSocket *,int);
+    void removeSocket(int);
 protected:
     void incomingConnection(qintptr socketDescriptor);
 private:
-    QVector<xServerThread *> threadPool;
+    QHash<int,xServerTcpSocket *> * clientPool;
 
 };
 

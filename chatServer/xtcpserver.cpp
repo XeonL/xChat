@@ -1,25 +1,16 @@
 #include "xtcpserver.h"
 #include <QObject>
 #include <QDebug>
-#include "xserverthread.h"
+#include <QThread>
+#include "worker.h"
 #include "xservertcpsocket.h"
 xTcpServer::xTcpServer(QObject *parent) :
-    QTcpServer(parent),threadPool()
+    QTcpServer(parent)
 {
-
+    clientPool = new QHash<int,xServerTcpSocket *>;
 }
 xTcpServer::~xTcpServer() {
-//    ~QTcpServer();
-    auto begin = threadPool.begin();
-    auto end = threadPool.end();
-    while(begin!=end) {
-        if(begin) {
-            (*begin)->terminate();
-            delete *begin;
-            (*begin) = nullptr;
-        }
-        begin++;
-    }
+
 }
 
 void xTcpServer::startServer() {
@@ -35,10 +26,31 @@ void xTcpServer::startServer() {
 
 void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     qDebug() << socketDescriptor << " Connecting...";
-    xServerThread *thread = new xServerThread(socketDescriptor,this);
-    //添加入线程池以便程序关闭时结束进程
-    threadPool.append(thread);
-    connect(thread,SIGNAL(finished()),thread,SLOT(deleteLater()));
-    thread->start();
+//    xServerThread *thread = new xServerThread(socketDescriptor,this);
+//    //添加入线程池以便程序关闭时结束进程
+//    threadPool.append(thread);
+//    connect(thread,SIGNAL(finished()),thread,SLOT(deleteLater()));
+//    thread->start();
 
+    Worker * newWorker = new Worker(socketDescriptor);
+    QThread *thread = new QThread();
+    connect(thread,&QThread::started,newWorker,&Worker::initialize);
+    connect(newWorker,&Worker::newTcpSocket,this,&xTcpServer::addSocket);
+    connect(newWorker,&Worker::socketDisconnect,thread,&QThread::quit);
+    connect(newWorker,&Worker::socketDisconnect,newWorker,&Worker::deleteLater);
+    connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
+
+    newWorker->moveToThread(thread);
+    thread->start();
+}
+
+void xTcpServer::addSocket(xServerTcpSocket *socket, int descriptor) {
+    clientPool->insert(descriptor,socket);
+}
+
+void xTcpServer::removeSocket(int descriptor) {
+    xServerTcpSocket *tcp = clientPool->value(descriptor);
+    clientPool->remove(descriptor);
+    delete tcp;
+    qDebug()<<"remove socket from pool";
 }

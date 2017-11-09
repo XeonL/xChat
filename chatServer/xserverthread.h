@@ -12,6 +12,10 @@ public:
 private:
     xServerTcpSocket *myTcpSocket;
     qintptr socketDescriptor;
+    bool end;
+
+private slots:
+    void closeThread();
 };
 
 #endif // XSERVERTHREAD_H

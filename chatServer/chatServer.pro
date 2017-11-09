@@ -28,13 +28,15 @@ SOURCES += \
         widget.cpp \
     xtcpserver.cpp \
     xserverthread.cpp \
-    xservertcpsocket.cpp
+    xservertcpsocket.cpp \
+    worker.cpp
 
 HEADERS += \
         widget.h \
     xtcpserver.h \
     xserverthread.h \
-    xservertcpsocket.h
+    xservertcpsocket.h \
+    worker.h
 
 FORMS += \
         widget.ui

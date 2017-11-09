@@ -27,8 +27,8 @@ void Widget::on_connectButton_clicked()
 }
 void Widget::beginLogin() {
 
-//    loginWindow->show();
-//    this->hide();
+    loginWindow->show();
+    this->hide();
 }
 void Widget::readMessage() {
     qDebug() << "readready";

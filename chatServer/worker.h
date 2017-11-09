@@ -20,7 +20,5 @@ private:
     void sendSignalOfDisconnect();
     xServerTcpSocket *tcpSocket;
     qintptr socketDescriptor;
-    quint16 blockSize;
-    quint8 dataType;
 };
 #endif // WORKER_H

@@ -12,8 +12,6 @@ signals:
     void newTcpSocket(xServerTcpSocket *,int);
     void socketWaitRemove(int);
     void socketDisconnect();
-    void accountInfo(quint8 type,QString &username,QString &password = QString(),
-                     QString &nickname = QString(),QString &stunum = QString());
 public slots:
     void initialize();
     void readData();

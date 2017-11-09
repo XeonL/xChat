@@ -43,30 +43,21 @@ void Worker::readData() {
     }
     if(tcpSocket->bytesAvailable() < blockSize) return;
 //    in >> data;
-    char username[16];
-    char password[16];
-    char nickname[16];
-    char stunum[16];
+
     switch(dataType) {
     case 1:{
         //登录
-        in >> username;
-        in >> password;
-        emit accountInfo();
+
+
         break;
     }
     case 2:{
         //注册
-        in >> username;
-        in >> password;
-        in >> nickname;
-        in >> stunum;
+
         break;
     }
     case 3:{
         //找回密码
-        in >> username;
-        in >> stunum;
         break;
     }
     default:{
@@ -74,7 +65,7 @@ void Worker::readData() {
 
     }
     }
-    type = 0;
+    dataType = 0;
     blockSize = 0;
 }
 

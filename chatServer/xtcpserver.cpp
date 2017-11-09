@@ -26,19 +26,14 @@ void xTcpServer::startServer() {
 
 void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     qDebug() << socketDescriptor << " Connecting...";
-//    xServerThread *thread = new xServerThread(socketDescriptor,this);
-//    //添加入线程池以便程序关闭时结束进程
-//    threadPool.append(thread);
-//    connect(thread,SIGNAL(finished()),thread,SLOT(deleteLater()));
-//    thread->start();
 
-    Worker * newWorker = new Worker(socketDescriptor);
-    QThread *thread = new QThread();
-    connect(thread,&QThread::started,newWorker,&Worker::initialize);
-    connect(newWorker,&Worker::newTcpSocket,this,&xTcpServer::addSocket);
-    connect(newWorker,&Worker::socketDisconnect,thread,&QThread::quit);
-    connect(newWorker,&Worker::socketDisconnect,newWorker,&Worker::deleteLater);
-    connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
+//    Worker * newWorker = new Worker(socketDescriptor);
+//    QThread *thread = new QThread();
+//    connect(thread,&QThread::started,newWorker,&Worker::initialize);
+//    connect(newWorker,&Worker::newTcpSocket,this,&xTcpServer::addSocket);
+//    connect(newWorker,&Worker::socketDisconnect,thread,&QThread::quit);
+//    connect(newWorker,&Worker::socketDisconnect,newWorker,&Worker::deleteLater);
+//    connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
 
     newWorker->moveToThread(thread);
     thread->start();

@@ -35,12 +35,11 @@ void LoginWindow::on_foundPasswordButton_clicked()
 
 void LoginWindow::on_loginButton_clicked()
 {
-    QByteArray block;
-    QDataStream out(&block,QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_9);
-    out << tr("login");
-    out << ui->username->text();
-    out << ui->password->text();
+    QString str = QString("login#");
+    str += ui->username->text();
+    str += "#";
+    str += ui->password->text();
+    QByteArray block = str.toLatin1();
     myTcpSocket->write(block);
     qDebug() << QString(block);
 }

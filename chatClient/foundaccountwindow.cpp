@@ -23,7 +23,13 @@ void FoundAccountWindow::on_back_clicked()
 
 void FoundAccountWindow::on_foundButton_clicked()
 {
-
+    QString str = QString("found#");
+    str += ui->username->text();
+    str += "#";
+    str += ui->stuNum->text();
+    QByteArray block = str.toLatin1();
+    myTcpSocket->write(block);
+    qDebug() << QString(block);
 }
 void FoundAccountWindow::clear() {
     ui->username->clear();

@@ -30,14 +30,14 @@ void Worker::initialize() {
 }
 
 void Worker::readData() {
-    qDebug() << tcpSocket->readAll();
-    //QString data = QString(tcpSocket->readAll());
-//    QStringList list = data.split(" ");
-//    qDebug() << "receive message:";
-//    for(int i=0;i<list.count();i++) {
-//        qDebug() << list[i];
-//    }
-//    qDebug() << data;
+//    qDebug() << tcpSocket->readAll();
+    QString data = QString(tcpSocket->readAll());
+    QStringList list = data.split("#");
+    qDebug() << "receive message:";
+    for(int i=0;i<list.count();i++) {
+        qDebug() << list[i];
+    }
+    qDebug() << data;
 }
 
 void Worker::sendSignalOfDisconnect() {

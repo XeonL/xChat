@@ -22,8 +22,17 @@ void SignupWindow::on_back_clicked()
 
 void SignupWindow::on_signup_clicked()
 {
-    QByteArray block;
-
+    QString str = QString("register#");
+    str += ui->username->text();
+    str += "#";
+    str += ui->password->text();
+    str += "#";
+    str += ui->nickName->text();
+    str += "#";
+    str += ui->stuNum->text();
+    QByteArray block = str.toLatin1();
+    myTcpSocket->write(block);
+    qDebug() << QString(block);
 
 }
 

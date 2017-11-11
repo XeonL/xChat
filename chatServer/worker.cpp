@@ -4,7 +4,7 @@
 #include <QHostAddress>
 //#include <QDebug>
 Worker::Worker(qintptr descriptor,QObject *parent) :
-    QObject(parent),socketDescriptor(descriptor)
+    QObject(parent),socketDescriptor(descriptor),isLogined(false)
 {
     qDebug()<<"new Worker";
 }
@@ -55,6 +55,7 @@ void Worker::readData() {
                 sendMessageToClient(message);
                 QString userinfo = query.value(1).toString() + "#" + tcpSocket->peerAddress().toString();
                 emit newLogin(socketDescriptor,userinfo);
+                isLogined = true;
             } else {
                 QString message = "login#false";
                 sendMessageToClient(message);
@@ -117,4 +118,9 @@ void Worker::sendMessageToClient(const QString &str) {
     QByteArray block = str.toUtf8();
     tcpSocket->write(block);
 
+}
+void Worker::broadcastUserList(const QString &data) {
+    if(isLogined) {
+        sendMessageToClient(data);
+    }
 }

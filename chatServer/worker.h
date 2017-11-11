@@ -21,10 +21,11 @@ signals:
 public slots:
     void initialize();
     void readData();
+    void broadcastUserList(QString const &);
 
 private:
     void sendSignalOfDisconnect();
-
+    bool isLogined;
     xServerTcpSocket *tcpSocket;
     qintptr socketDescriptor;
 };

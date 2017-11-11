@@ -55,7 +55,7 @@ void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
     connect(newWorker,&Worker::newLogin,this,&xTcpServer::newLogin);
 
-    connect(this,&xTcpServer::broadcastListSignal,newWorker,&Worker::sendMessageToClient);
+    connect(this,&xTcpServer::broadcastListSignal,newWorker,&Worker::broadcastUserList);
 
 
     newWorker->moveToThread(thread);

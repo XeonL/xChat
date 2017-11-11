@@ -23,3 +23,12 @@ void UserWindow::updateUserList(const QString &data) {
         ui->userList->addItem(list[i]);
     }
 }
+
+void UserWindow::on_chatbutton_clicked()
+{
+    QString user = ui->usernameToChat->text();
+    QString ip = userList->value(user);
+    if(ip=="") {
+        QMessageBox::warning(nullptr,"Warning","请输入在线用户的用户名！",QMessageBox::Yes);
+    }
+}

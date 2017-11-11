@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "xclienttcpsocket.h"
 #include <QHash>
-
+#include <QMessageBox>
 namespace Ui {
 class UserWindow;
 }
@@ -18,6 +18,9 @@ public:
     ~UserWindow();
 public slots:
     void updateUserList(QString const &);
+private slots:
+    void on_chatbutton_clicked();
+
 private:
     Ui::UserWindow *ui;
     xClientTcpSocket *tcpSocket;

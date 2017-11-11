@@ -5,6 +5,7 @@
 #include "xclienttcpsocket.h"
 #include "xclientudpsocket.h"
 #include "loginwindow.h"
+#include "userwindow.h"
 
 namespace Ui {
 class Widget;
@@ -22,13 +23,18 @@ private slots:
     void on_connectButton_clicked();
     void beginLogin();
     void readMessage();
-
+signals:
+    void updateUserList(QString const &);
 private:
+    void registerResult(QString &);
+    void foundResult(QString &);
+    void loginResult(QString &);
     Ui::Widget *ui;
     xClientTcpSocket *myTcpSocket;
     xClientUdpSocket *myUdpSocket;
     LoginWindow *loginWindow;
-    quint16 blockSize;
+    UserWindow *userWindow;
+
 };
 
 #endif // WIDGET_H

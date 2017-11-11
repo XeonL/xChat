@@ -31,7 +31,8 @@ SOURCES += \
     loginwindow.cpp \
     signupwindow.cpp \
     foundaccountwindow.cpp \
-    message.cpp
+    message.cpp \
+    userwindow.cpp
 
 HEADERS += \
         widget.h \
@@ -40,11 +41,13 @@ HEADERS += \
     loginwindow.h \
     signupwindow.h \
     foundaccountwindow.h \
-    message.h
+    message.h \
+    userwindow.h
 
 FORMS += \
         widget.ui \
     loginwindow.ui \
     signupwindow.ui \
     foundaccountwindow.ui \
-    message.ui
+    message.ui \
+    userwindow.ui

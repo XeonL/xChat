@@ -27,7 +27,7 @@ void FoundAccountWindow::on_foundButton_clicked()
     str += ui->username->text();
     str += "#";
     str += ui->stuNum->text();
-    QByteArray block = str.toLatin1();
+    QByteArray block = str.toUtf8();
     myTcpSocket->write(block);
     qDebug() << QString(block);
 }

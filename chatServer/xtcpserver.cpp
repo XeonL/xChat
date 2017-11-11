@@ -1,16 +1,33 @@
 #include "xtcpserver.h"
-#include <QObject>
-#include <QDebug>
-#include <QThread>
+
 #include "worker.h"
 #include "xservertcpsocket.h"
 xTcpServer::xTcpServer(QObject *parent) :
     QTcpServer(parent)
 {
     clientPool = new QHash<int,xServerTcpSocket *>;
+    db = new QSqlDatabase();
+    *db = QSqlDatabase::addDatabase("QSQLITE");
+    db->setDatabaseName("info.db");
+    db->open();
+    QSqlQuery query;
+    bool success = query.exec("CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                           "username VARCHAR(20),"
+                           "password VARCHAR(20),"
+                           "nickname VARCHAR(20),"
+                           "stunum VARCHAR(20))");
+    if(success) {
+        qDebug() << "数据库建立成功！";
+    } else {
+        qDebug() << "数据库建立失败！";
+    }
+
+
 }
 xTcpServer::~xTcpServer() {
-
+    db->close();
+    delete db;
+    delete clientPool;
 }
 
 void xTcpServer::startServer() {
@@ -34,7 +51,7 @@ void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     connect(newWorker,&Worker::socketDisconnect,thread,&QThread::quit);
     connect(newWorker,&Worker::socketDisconnect,newWorker,&Worker::deleteLater);
     connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
-
+//    connect(newWorker,&Worker::readMessage,this,&xTcpServer::messageController);
     newWorker->moveToThread(thread);
     thread->start();
 }
@@ -49,3 +66,26 @@ void xTcpServer::removeSocket(int descriptor) {
     delete tcp;
     qDebug()<<"remove socket from pool";
 }
+//void xTcpServer::messageController(QString const &message) {
+//    qDebug() << "controller";
+//    QStringList list = message.split("#");
+//    QSqlQuery query;
+//    if(list[0] == "login") {
+//        qDebug() << "login";
+
+//    } else if(list[0] == "register") {
+//        QString str = QString("insert into user values (null,'%1','%2','%3','%4')").
+//                arg(list[1]).arg(list[2]).arg(list[3]).arg(list[4]);
+//        qDebug() << "register";
+//        qDebug() << str;
+//        if(query.exec(str)) {
+//            qDebug() << "insert success!";
+
+//        } else {
+//            qDebug() << "insert failed!";
+//        }
+//    } else if(list[0] == "found") {
+//        qDebug() << "found";
+//    }
+
+//}

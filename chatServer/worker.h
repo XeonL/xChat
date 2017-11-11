@@ -12,12 +12,18 @@ signals:
     void newTcpSocket(xServerTcpSocket *,int);
     void socketWaitRemove(int);
     void socketDisconnect();
+    //来自客户端的message
+//    void readMessage(QString const &);
+    void newRegister();
+    void newLogin(QString const &username,QString const &nickname,QString const &ip);
+
 public slots:
     void initialize();
     void readData();
 
 private:
     void sendSignalOfDisconnect();
+    void sendMessageToClient(QString const &);
     xServerTcpSocket *tcpSocket;
     qintptr socketDescriptor;
 };

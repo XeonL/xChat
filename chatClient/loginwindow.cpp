@@ -39,8 +39,9 @@ void LoginWindow::on_loginButton_clicked()
     str += ui->username->text();
     str += "#";
     str += ui->password->text();
-    QByteArray block = str.toLatin1();
+    QByteArray block = str.toUtf8();
     myTcpSocket->write(block);
+    qDebug() << str;
     qDebug() << QString(block);
 }
 

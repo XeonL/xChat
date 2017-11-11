@@ -30,7 +30,7 @@ void SignupWindow::on_signup_clicked()
     str += ui->nickName->text();
     str += "#";
     str += ui->stuNum->text();
-    QByteArray block = str.toLatin1();
+    QByteArray block = str.toUtf8();
     myTcpSocket->write(block);
     qDebug() << QString(block);
 

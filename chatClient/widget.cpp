@@ -31,17 +31,19 @@ void Widget::beginLogin() {
     this->hide();
 }
 void Widget::readMessage() {
-    qDebug() << "readready";
-    QDataStream in(myTcpSocket);
-    QString message;
-    in.setVersion(QDataStream::Qt_5_9);
-    if(blockSize==0) {
-        if(myTcpSocket->bytesAvailable() < (int)sizeof(quint16)) return;
-        in >> blockSize;
-    }
-    if(myTcpSocket->bytesAvailable() < blockSize) return;
-    in >> message;
-    Message * m = new Message();
-    m->setText(message);
-    m->show();
+//    qDebug() << "readready";
+//    QDataStream in(myTcpSocket);
+//    QString message;
+//    in.setVersion(QDataStream::Qt_5_9);
+//    if(blockSize==0) {
+//        if(myTcpSocket->bytesAvailable() < (int)sizeof(quint16)) return;
+//        in >> blockSize;
+//    }
+//    if(myTcpSocket->bytesAvailable() < blockSize) return;
+//    in >> message;
+//    Message * m = new Message();
+//    m->setText(message);
+//    m->show();
+    QString data = QString(myTcpSocket->readAll());
+    qDebug() << data;
 }

@@ -1,12 +1,14 @@
 #include "userwindow.h"
 #include "ui_userwindow.h"
-
+#include <QThread>
 UserWindow::UserWindow(xClientTcpSocket *socket,QWidget *parent) :
     QWidget(parent),tcpSocket(socket),
     ui(new Ui::UserWindow)
 {
     ui->setupUi(this);
     userList = new QHash<QString,QString>();
+    server = new tcpServer(this);
+
 }
 
 UserWindow::~UserWindow()
@@ -30,5 +32,16 @@ void UserWindow::on_chatbutton_clicked()
     QString ip = userList->value(user);
     if(ip=="") {
         QMessageBox::warning(nullptr,"Warning","请输入在线用户的用户名！",QMessageBox::Yes);
+    } else {
+
+        ChatWindow *chat = new ChatWindow(user,ip);
+        chat->show();
+        chat->initialize();
+        chat->setAttribute(Qt::WA_DeleteOnClose);
+//        QThread *thread = new QThread();
+//        connect(thread,&QThread::started,chat,&ChatWindow::initialize);
+//        connect(chat,&ChatWindow::destroyed,thread,&QThread::quit);
+//        chat->moveToThread(thread);
+//        thread->start();
     }
 }

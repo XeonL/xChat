@@ -5,6 +5,8 @@
 #include "xclienttcpsocket.h"
 #include <QHash>
 #include <QMessageBox>
+#include "tcpserver.h"
+#include "chatwindow.h"
 namespace Ui {
 class UserWindow;
 }
@@ -25,6 +27,7 @@ private:
     Ui::UserWindow *ui;
     xClientTcpSocket *tcpSocket;
     QHash<QString,QString> *userList;
+    tcpServer *server;
 };
 
 #endif // USERWINDOW_H

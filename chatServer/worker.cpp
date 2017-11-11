@@ -53,10 +53,8 @@ void Worker::readData() {
             if(query.next()) {
                 QString message = "login#true";
                 sendMessageToClient(message);
-                emit newLogin(query.value(1).toString(),
-                              query.value(3).toString(),
-                              tcpSocket->peerAddress().toString());
-                qDebug() << tcpSocket->peerAddress().toString();
+                QString userinfo = query.value(1).toString() + "#" + tcpSocket->peerAddress().toString();
+                emit newLogin(socketDescriptor,userinfo);
             } else {
                 QString message = "login#false";
                 sendMessageToClient(message);
@@ -66,19 +64,28 @@ void Worker::readData() {
         }
 
     } else if(list[0] == "register") {
-        QString str = QString("insert into user values (null,'%1','%2','%3','%4')").
-                arg(list[1]).arg(list[2]).arg(list[3]).arg(list[4]);
-        qDebug() << "register";
-        qDebug() << str;
-        if(query.exec(str)) {
-            qDebug() << "insert success!";
-            emit newRegister();
-            QString message = "register#true";
+        QString test = QString("select * from user where username = '%1'").arg(list[1]);
+        query.exec(test);
+        if(query.next()) {
+            qDebug() << "username error!";
+            QString  message = "register#false#2";
             sendMessageToClient(message);
         } else {
-            qDebug() << "insert failed!";
-            QString message = "register#false";
-            sendMessageToClient(message);
+
+            QString str = QString("insert into user values (null,'%1','%2','%3','%4')").
+                    arg(list[1]).arg(list[2]).arg(list[3]).arg(list[4]);
+            qDebug() << "register";
+            qDebug() << str;
+            if(query.exec(str)) {
+                qDebug() << "insert success!";
+                emit newRegister();
+                QString message = "register#true";
+                sendMessageToClient(message);
+            } else {
+                qDebug() << "insert failed!";
+                QString message = "register#false#1";
+                sendMessageToClient(message);
+            }
         }
     } else if(list[0] == "found") {
         qDebug() << "found";

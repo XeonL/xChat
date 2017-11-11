@@ -21,16 +21,21 @@ public:
     void startServer();
 signals:
     void listenStatusChange(const QString &status);
+    void broadcastListSignal(const QString &listStr);
+//    void newLogin(QString const &username,QString const &nickname,QString const &ip);
 public slots:
     void addSocket(xServerTcpSocket *,int);
     void removeSocket(int);
+    void newLogin(int,QString const &);
     //来自客户端的消息处理
 //    void messageController(QString const &);
 protected:
     void incomingConnection(qintptr socketDescriptor);
 private:
+    void broadcastList();
     QHash<int,xServerTcpSocket *> * clientPool;
     QSqlDatabase * db;
+    QHash<int,QString> * onlineUser;
 
 };
 

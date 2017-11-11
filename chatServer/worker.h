@@ -7,6 +7,7 @@ class Worker : public QObject
     Q_OBJECT
 public:
     explicit Worker(qintptr descriptor,QObject *parent = nullptr);
+    void sendMessageToClient(QString const &);
 
 signals:
     void newTcpSocket(xServerTcpSocket *,int);
@@ -15,7 +16,7 @@ signals:
     //来自客户端的message
 //    void readMessage(QString const &);
     void newRegister();
-    void newLogin(QString const &username,QString const &nickname,QString const &ip);
+    void newLogin(int handle,QString const &username);
 
 public slots:
     void initialize();
@@ -23,7 +24,7 @@ public slots:
 
 private:
     void sendSignalOfDisconnect();
-    void sendMessageToClient(QString const &);
+
     xServerTcpSocket *tcpSocket;
     qintptr socketDescriptor;
 };

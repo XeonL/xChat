@@ -37,4 +37,5 @@ HEADERS += \
     worker.h
 
 FORMS += \
-        widget.ui
+        widget.ui \
+    listenwindow.ui

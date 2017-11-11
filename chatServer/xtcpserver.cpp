@@ -6,6 +6,7 @@ xTcpServer::xTcpServer(QObject *parent) :
     QTcpServer(parent)
 {
     clientPool = new QHash<int,xServerTcpSocket *>;
+    onlineUser = new QHash<int,QString>;
     db = new QSqlDatabase();
     *db = QSqlDatabase::addDatabase("QSQLITE");
     db->setDatabaseName("info.db");
@@ -21,6 +22,7 @@ xTcpServer::xTcpServer(QObject *parent) :
     } else {
         qDebug() << "数据库建立失败！";
     }
+
 
 
 }
@@ -51,7 +53,11 @@ void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     connect(newWorker,&Worker::socketDisconnect,thread,&QThread::quit);
     connect(newWorker,&Worker::socketDisconnect,newWorker,&Worker::deleteLater);
     connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
-//    connect(newWorker,&Worker::readMessage,this,&xTcpServer::messageController);
+    connect(newWorker,&Worker::newLogin,this,&xTcpServer::newLogin);
+
+    connect(this,&xTcpServer::broadcastListSignal,newWorker,&Worker::sendMessageToClient);
+
+
     newWorker->moveToThread(thread);
     thread->start();
 }
@@ -63,29 +69,30 @@ void xTcpServer::addSocket(xServerTcpSocket *socket, int descriptor) {
 void xTcpServer::removeSocket(int descriptor) {
     xServerTcpSocket *tcp = clientPool->value(descriptor);
     clientPool->remove(descriptor);
+    QString username = onlineUser->value(descriptor);
+    if(onlineUser->remove(descriptor)) {
+        broadcastList();
+    }
     delete tcp;
     qDebug()<<"remove socket from pool";
 }
-//void xTcpServer::messageController(QString const &message) {
-//    qDebug() << "controller";
-//    QStringList list = message.split("#");
-//    QSqlQuery query;
-//    if(list[0] == "login") {
-//        qDebug() << "login";
 
-//    } else if(list[0] == "register") {
-//        QString str = QString("insert into user values (null,'%1','%2','%3','%4')").
-//                arg(list[1]).arg(list[2]).arg(list[3]).arg(list[4]);
-//        qDebug() << "register";
-//        qDebug() << str;
-//        if(query.exec(str)) {
-//            qDebug() << "insert success!";
+void xTcpServer::newLogin(int handle, const QString & username) {
+    qDebug() << username << " is login!";
+    onlineUser->insert(handle,username);
+    broadcastList();
+}
 
-//        } else {
-//            qDebug() << "insert failed!";
-//        }
-//    } else if(list[0] == "found") {
-//        qDebug() << "found";
-//    }
+void xTcpServer::broadcastList() {
+    qDebug() << "begin broadcast!";
+    QString str = "userlist";
+    auto begin = onlineUser->begin();
+    auto end = onlineUser->end();
+    while(begin!=end) {
 
-//}
+        str += ("#" + begin.value());
+        begin++;
+    }
+    qDebug() << str;
+    emit broadcastListSignal(str);
+}

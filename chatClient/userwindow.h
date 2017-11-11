@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "xclienttcpsocket.h"
+#include <QHash>
 
 namespace Ui {
 class UserWindow;
@@ -20,6 +21,7 @@ public slots:
 private:
     Ui::UserWindow *ui;
     xClientTcpSocket *tcpSocket;
+    QHash<QString,QString> *userList;
 };
 
 #endif // USERWINDOW_H

@@ -18,7 +18,7 @@ void UserWindow::updateUserList(const QString &data) {
     int len = list.count()/2;
     userList->clear();
     ui->userList->clear();
-    for(int i=1;i<=len;i++) {
+    for(int i=1;i<=len;i+=2) {
         userList->insert(list[i],list[i+1].mid(7));
         ui->userList->addItem(list[i]);
     }

@@ -13,50 +13,53 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QListWidget" name="messageList">
+  <widget class="QLabel" name="userName">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>30</y>
-     <width>461</width>
-     <height>241</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="name">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>5</y>
+     <y>10</y>
      <width>101</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
-  <widget class="QLineEdit" name="messageLine">
+  <widget class="QListWidget" name="messageList">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>280</y>
-     <width>371</width>
-     <height>71</height>
+     <y>60</y>
+     <width>461</width>
+     <height>201</height>
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="sendMessageButton">
+  <widget class="QPushButton" name="sendButton">
    <property name="geometry">
     <rect>
      <x>390</x>
-     <y>280</y>
-     <width>71</width>
-     <height>71</height>
+     <y>270</y>
+     <width>80</width>
+     <height>81</height>
     </rect>
    </property>
    <property name="text">
     <string>发送</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="messageInput">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>270</y>
+     <width>371</width>
+     <height>81</height>
+    </rect>
    </property>
   </widget>
  </widget>

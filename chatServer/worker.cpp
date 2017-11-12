@@ -51,7 +51,7 @@ void Worker::readData() {
                 arg(list[1]).arg(list[2]);
         if(query.exec(str)) {
             if(query.next()) {
-                QString message = "login#true";
+                QString message = QString("login#true#%1").arg(list[1]);
                 sendMessageToClient(message);
                 QString userinfo = query.value(1).toString() + "#" + tcpSocket->peerAddress().toString();
                 emit newLogin(socketDescriptor,userinfo);

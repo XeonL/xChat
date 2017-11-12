@@ -13,6 +13,7 @@ Widget::Widget(QWidget *parent) :
     connect(myTcpSocket,SIGNAL(readyRead()),this,SLOT(readMessage()));
     connect(myTcpSocket,SIGNAL(connected()),this,SLOT(beginLogin()));
     connect(this,&Widget::updateUserList,userWindow,&UserWindow::updateUserList);
+    connect(this,&Widget::UserLogin,userWindow,&UserWindow::updateInfo);
 }
 
 Widget::~Widget()
@@ -76,6 +77,7 @@ void Widget::loginResult(QString &data) {
     if(list[1]=="true") {
         loginWindow->hide();
         userWindow->show();
+        emit UserLogin(list[2]);
 
     } else {
         QMessageBox::warning(nullptr,QString("登录信息"),QString("用户名或密码错误，请重新输入！"),QMessageBox::Yes);

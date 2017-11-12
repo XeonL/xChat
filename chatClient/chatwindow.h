@@ -2,7 +2,7 @@
 #define CHATWINDOW_H
 
 #include <QWidget>
-#include <QTcpSocket>
+#include <QDateTime>
 
 namespace Ui {
 class ChatWindow;
@@ -13,27 +13,18 @@ class ChatWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit ChatWindow(qintptr handle,QWidget *parent = 0);
-    explicit ChatWindow(QString &username,QString &ip,QWidget *parent = 0);
+    explicit ChatWindow(QString &username,QString anothername = "",QWidget *parent = 0);
     ~ChatWindow();
-public slots:
-    void initialize();
 signals:
-//    void sockDisconnectedSignal();
+    void newMessageToSend(QString const &);
 private slots:
-    void on_sendMessageButton_clicked();
-    void readMessage();
-
+    void on_sendButton_clicked();
+public slots:
+    void newMessageGet(QString const &);
 private:
-    void sendChatMessage(QString const &);
-    void sockDisConnect();
     Ui::ChatWindow *ui;
-    QTcpSocket *tcpsocket;
-    bool type;
-    int handle;
-    QString username;
-    QString ip;
-    bool sign;
+    QString userName;
+    QString anotherUserName;
 };
 
 #endif // CHATWINDOW_H

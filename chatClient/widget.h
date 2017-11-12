@@ -25,6 +25,7 @@ private slots:
     void readMessage();
 signals:
     void updateUserList(QString const &);
+    void UserLogin(QString const &);
 private:
     void registerResult(QString &);
     void foundResult(QString &);

@@ -1,64 +1,36 @@
 #include "chatwindow.h"
 #include "ui_chatwindow.h"
-#include <QHostAddress>
+#include <QDebug>
+ChatWindow::ChatWindow(QString &username,QString anothername,QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ChatWindow)
+{
+    ui->setupUi(this);
+    userName = username;
+    anotherUserName = anothername;
+    ui->userName->setText(anotherUserName);
+}
 
-ChatWindow::ChatWindow(qintptr hand,QWidget *parent) :
-    QWidget(parent),type(false),handle(hand),
-    ui(new Ui::ChatWindow),sign(false)
-{
-    ui->setupUi(this);
-}
-ChatWindow::ChatWindow(QString &username1,QString &ip1,QWidget *parent) :
-    QWidget(parent),type(true),username(username1),
-    ip(ip1),
-    ui(new Ui::ChatWindow),sign(false)
-{
-    ui->setupUi(this);
-}
 ChatWindow::~ChatWindow()
 {
     delete ui;
 }
-void ChatWindow::initialize() {
-    tcpsocket = new QTcpSocket(this);
-    connect(tcpsocket,&QTcpSocket::disconnected,this,&ChatWindow::sockDisConnect);
-    connect(tcpsocket,&QTcpSocket::readyRead,this,&ChatWindow::readMessage);
-    if(type) {
-        tcpsocket->setSocketDescriptor(handle);
-        QString newIp = (tcpsocket->peerAddress()).toString().mid(7);
-        ip = newIp;
-    } else {
-//        tcpsocket->connectToHost(ip,8888);
-        sign = true;
-    }
-}
-void ChatWindow::sendChatMessage(const QString &data) {
-    QByteArray block = data.toUtf8();
-    if(sign) {
-        if(tcpsocket==nullptr) {
-            tcpsocket = new QTcpSocket();
-            connect(tcpsocket,&QTcpSocket::disconnected,this,&ChatWindow::sockDisConnect);
-            connect(tcpsocket,&QTcpSocket::readyRead,this,&ChatWindow::readMessage);
-        }
-        tcpsocket->connectToHost(ip,8888);
-        sign = false;
-    }
-    tcpsocket->write(block);
-}
-void ChatWindow::sockDisConnect() {
-    delete tcpsocket;
-    tcpsocket = nullptr;
-//    emit sockDisconnectedSignal();
-    sign = true;
-}
 
-void ChatWindow::on_sendMessageButton_clicked()
+void ChatWindow::on_sendButton_clicked()
 {
-    QString str = ui->messageLine->text();
-    ui->messageList->addItem(str);
-    sendChatMessage(str);
+    QDateTime current_date_time = QDateTime::currentDateTime();
+    QString current_date = current_date_time.toString("yyyy-MM-dd hh:mm:ss ddd");
+    QString message = userName + " " + current_date + " : " + ui->messageInput->text();
+    qDebug() << "wait to send : " << message;
+    ui->messageList->addItem(message);
+    emit newMessageToSend(message);
 }
-void ChatWindow::readMessage() {
-    QString str = QString(tcpsocket->readAll());
-    ui->messageList->addItem(str);
+void ChatWindow::newMessageGet(const QString &message) {
+    qDebug() << "get message:" << message;
+    ui->messageList->addItem(message);
+    if(anotherUserName=="") {
+        QStringList list = message.split(" ");
+        anotherUserName = list[0];
+        ui->userName->setText(anotherUserName);
+    }
 }

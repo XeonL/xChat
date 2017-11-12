@@ -33,8 +33,9 @@ SOURCES += \
     foundaccountwindow.cpp \
     message.cpp \
     userwindow.cpp \
-    chatwindow.cpp \
-    tcpserver.cpp
+    tcpserver.cpp \
+    worker.cpp \
+    chatwindow.cpp
 
 HEADERS += \
         widget.h \
@@ -45,8 +46,9 @@ HEADERS += \
     foundaccountwindow.h \
     message.h \
     userwindow.h \
-    chatwindow.h \
-    tcpserver.h
+    tcpserver.h \
+    worker.h \
+    chatwindow.h
 
 FORMS += \
         widget.ui \

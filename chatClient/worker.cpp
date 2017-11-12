@@ -30,6 +30,7 @@ void Worker::initialize() {
     connect(tcpSocket,&QTcpSocket::readyRead,this,&Worker::getMessage);
 }
 void Worker::connectMiss() {
+    qDebug() << "isConnected!";
     isDisconnected = true;
 }
 void Worker::getMessage() {
@@ -42,6 +43,9 @@ void Worker::sendMessage(QString const &message) {
         delete tcpSocket;
         tcpSocket = new QTcpSocket();
         tcpSocket->connectToHost(anotherIp,8888);
+        connect(tcpSocket,&QTcpSocket::disconnected,this,&Worker::connectMiss);
+        connect(tcpSocket,&QTcpSocket::readyRead,this,&Worker::getMessage);
+        qDebug() << "new connect";
         bool ok = true;
         if(ok) {
             isDisconnected = false;

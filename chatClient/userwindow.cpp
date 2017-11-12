@@ -16,13 +16,14 @@ UserWindow::~UserWindow()
     delete ui;
 }
 void UserWindow::updateUserList(const QString &data) {
+    qDebug() << data;
     QStringList list = data.split("#");
     int len = list.count()/2;
     userList->clear();
     ui->userList->clear();
-    for(int i=1;i<=len;i+=2) {
-        userList->insert(list[i],list[i+1].mid(7));
-        ui->userList->addItem(list[i]);
+    for(int i=1;i<=len;i++) {
+        userList->insert(list[2*i-1],list[2*i].mid(7));
+        ui->userList->addItem(list[2*i-1]);
     }
 }
 

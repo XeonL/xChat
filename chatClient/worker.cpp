@@ -42,7 +42,14 @@ void Worker::sendMessage(QString const &message) {
         delete tcpSocket;
         tcpSocket = new QTcpSocket();
         tcpSocket->connectToHost(anotherIp,8888);
-        isDisconnected = false;
+        bool ok = true;
+        if(ok) {
+            isDisconnected = false;
+        } else {
+            qDebug() << "对方已下线，发送离线消息！";
+            emit offlineMessage(message);
+            return;
+        }
     }
     QByteArray block = message.toUtf8();
     tcpSocket->write(block);

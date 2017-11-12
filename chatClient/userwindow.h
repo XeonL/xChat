@@ -22,9 +22,13 @@ public:
 public slots:
     void updateUserList(QString const &);
     void updateInfo(QString const &);
+    void updateOfflineList(QString const &);
+    void getOfflineMessage(QString const &);
 
 private slots:
     void on_chatbutton_clicked();
+
+    void on_offlineMessageButton_clicked();
 
 private:
     void newChatWindow1(qintptr descriptor);

@@ -1,5 +1,5 @@
 #include "xtcpserver.h"
-
+#include "synchapi.h"
 #include "worker.h"
 #include "xservertcpsocket.h"
 xTcpServer::xTcpServer(QObject *parent) :
@@ -7,6 +7,7 @@ xTcpServer::xTcpServer(QObject *parent) :
 {
     clientPool = new QHash<int,xServerTcpSocket *>;
     onlineUser = new QHash<int,QString>;
+    offlineUser = new QHash<QString,QStringList>;
     db = new QSqlDatabase();
     *db = QSqlDatabase::addDatabase("QSQLITE");
     db->setDatabaseName("info.db");
@@ -23,7 +24,11 @@ xTcpServer::xTcpServer(QObject *parent) :
         qDebug() << "数据库建立失败！";
     }
 
-
+    query.exec("select * from user");
+    while(query.next()) {
+        QStringList list;
+        offlineUser->insert(query.value(1).toString(),list);
+    }
 
 }
 xTcpServer::~xTcpServer() {
@@ -54,9 +59,9 @@ void xTcpServer::incomingConnection(qintptr socketDescriptor) {
     connect(newWorker,&Worker::socketDisconnect,newWorker,&Worker::deleteLater);
     connect(newWorker,&Worker::socketWaitRemove,this,&xTcpServer::removeSocket);
     connect(newWorker,&Worker::newLogin,this,&xTcpServer::newLogin);
-
+    connect(this,&xTcpServer::offlineMessageList,newWorker,&Worker::sendOfflineMessage);
     connect(this,&xTcpServer::broadcastListSignal,newWorker,&Worker::broadcastUserList);
-
+    connect(newWorker,&Worker::addOfflineMessage,this,&xTcpServer::insertOfflineMessage);
 
     newWorker->moveToThread(thread);
     thread->start();
@@ -71,14 +76,22 @@ void xTcpServer::removeSocket(int descriptor) {
     clientPool->remove(descriptor);
     QString username = onlineUser->value(descriptor);
     if(onlineUser->remove(descriptor)) {
+        QStringList list;
+        offlineUser->insert(username.split("#")[0],list);
         broadcastList();
     }
     delete tcp;
-    qDebug()<<"remove socket from pool";
+    qDebug() << "remove socket from pool";
+    qDebug() << username.split("#")[0] + " is offline";
 }
 
 void xTcpServer::newLogin(int handle, const QString & username) {
     qDebug() << username << " is login!";
+    QStringList list = offlineUser->value(username.split("#")[0]);
+    qDebug() << username.split("#")[0] << "'s offline message is " + list.join("#");
+    emit offlineMessageList(list.join("#"),username.split("#")[0]);
+    offlineUser->remove(username.split("#")[0]);
+    qDebug() << "offline user " + username.split("#")[0] + " is removed";
     onlineUser->insert(handle,username);
     broadcastList();
 }
@@ -95,4 +108,21 @@ void xTcpServer::broadcastList() {
     }
     qDebug() << str;
     emit broadcastListSignal(str);
+    str = "offlinelist";
+    auto nbegin = offlineUser->begin();
+    auto nend = offlineUser->end();
+    while(nbegin!=nend) {
+        str += ("#" + nbegin.key());
+        nbegin++;
+    }
+    qDebug() << str;
+    Sleep(40);
+    emit broadcastListSignal(str);
+}
+
+void xTcpServer::insertOfflineMessage(const QString &username, const QString &str) {
+    QStringList list = offlineUser->value(username);
+    list << str;
+    qDebug() << "插入后的离线列表：" + list.join("#");
+    offlineUser->insert(username,list);
 }

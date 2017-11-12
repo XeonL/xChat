@@ -26,13 +26,15 @@ private slots:
 signals:
     void updateUserList(QString const &);
     void UserLogin(QString const &);
+    void offlineMessage(QString const &);
+    void updateOfflineList(QString const &);
 private:
     void registerResult(QString &);
+    void messageControl(QString &);
     void foundResult(QString &);
     void loginResult(QString &);
     Ui::Widget *ui;
     xClientTcpSocket *myTcpSocket;
-    xClientUdpSocket *myUdpSocket;
     LoginWindow *loginWindow;
     UserWindow *userWindow;
 

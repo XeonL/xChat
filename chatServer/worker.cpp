@@ -2,6 +2,7 @@
 #include <QDataStream>
 #include <QSqlQuery>
 #include <QHostAddress>
+#include "synchapi.h"
 //#include <QDebug>
 Worker::Worker(qintptr descriptor,QObject *parent) :
     QObject(parent),socketDescriptor(descriptor),isLogined(false)
@@ -56,6 +57,7 @@ void Worker::readData() {
                 QString userinfo = query.value(1).toString() + "#" + tcpSocket->peerAddress().toString();
                 emit newLogin(socketDescriptor,userinfo);
                 isLogined = true;
+                username = list[1];
             } else {
                 QString message = "login#false";
                 sendMessageToClient(message);
@@ -105,6 +107,9 @@ void Worker::readData() {
         } else {
             qDebug() << "found select failed";
         }
+    } else if(list[0] == "offline") {
+        qDebug() << "offline";
+        emit addOfflineMessage(list[1],list[2]);
     }
 }
 
@@ -115,7 +120,8 @@ void Worker::sendSignalOfDisconnect() {
 }
 
 void Worker::sendMessageToClient(const QString &str) {
-    QByteArray block = str.toUtf8();
+    QString newStr = str + "*";
+    QByteArray block = newStr.toUtf8();
     tcpSocket->write(block);
 
 }
@@ -123,4 +129,22 @@ void Worker::broadcastUserList(const QString &data) {
     if(isLogined) {
         sendMessageToClient(data);
     }
+}
+void Worker::sendOfflineMessage(QString const &listStr, const QString &name) {
+    if(isLogined&&username == name) {
+        if(listStr == "") return;
+        qDebug() << "begin send offline message list";
+        qDebug() << listStr;
+        QStringList list = listStr.split("#");
+        QString message = "offline";
+        for(int i = 0;i < list.count();i++) {
+            message += "#";
+            message += list[i];
+        }
+        if(message == "offline") return;
+        Sleep(400);
+        qDebug() << message;
+        sendMessageToClient(message);
+    }
+
 }

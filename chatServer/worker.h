@@ -17,16 +17,19 @@ signals:
 //    void readMessage(QString const &);
     void newRegister();
     void newLogin(int handle,QString const &username);
+    void addOfflineMessage(QString const &,QString const &);
 
 public slots:
     void initialize();
     void readData();
     void broadcastUserList(QString const &);
+    void sendOfflineMessage(QString const &,QString const &);
 
 private:
     void sendSignalOfDisconnect();
     bool isLogined;
     xServerTcpSocket *tcpSocket;
     qintptr socketDescriptor;
+    QString username;
 };
 #endif // WORKER_H

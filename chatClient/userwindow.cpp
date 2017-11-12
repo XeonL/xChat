@@ -72,3 +72,32 @@ void UserWindow::newChatWindow(QString const &user,QString const &ip) {
     newWorker->moveToThread(thread);
     thread->start();
 }
+
+void UserWindow::on_offlineMessageButton_clicked()
+{
+    QDateTime current_date_time = QDateTime::currentDateTime();
+    QString current_date = current_date_time.toString("yyyy-MM-dd hh:mm:ss ddd");
+    QString str = QString("offline#");
+    QString message = myName + " " + current_date + " " + ui->offlineMessage->text();
+    str += ui->offlineUserName->text();
+    str += "#";
+    str += message;
+    QByteArray block = str.toUtf8();
+    tcpSocket->write(block);
+    qDebug() << str;
+}
+void UserWindow::getOfflineMessage(const QString &str) {
+    qDebug() << "获取离线消息表..";
+    QStringList list = str.split("#");
+    for(int i = 1;i < list.count();i++) {
+        ui->offlineMessageList->addItem(list[i]);
+    }
+    qDebug() << str;
+}
+void UserWindow::updateOfflineList(const QString &data) {
+    QStringList list = data.split("#");
+    qDebug() << data << "..." << list.count();
+    for(int i = 1;i < list.count();i++) {
+        ui->offlineUserList->addItem(list[i]);
+    }
+}

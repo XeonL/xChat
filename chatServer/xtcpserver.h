@@ -22,11 +22,13 @@ public:
 signals:
     void listenStatusChange(const QString &status);
     void broadcastListSignal(const QString &listStr);
+    void offlineMessageList(QString const &,QString const &);
 //    void newLogin(QString const &username,QString const &nickname,QString const &ip);
 public slots:
     void addSocket(xServerTcpSocket *,int);
     void removeSocket(int);
     void newLogin(int,QString const &);
+    void insertOfflineMessage(QString const &,QString const &);
     //来自客户端的消息处理
 //    void messageController(QString const &);
 protected:
@@ -36,6 +38,7 @@ private:
     QHash<int,xServerTcpSocket *> * clientPool;
     QSqlDatabase * db;
     QHash<int,QString> * onlineUser;
+    QHash<QString,QStringList> * offlineUser;
 
 };
 

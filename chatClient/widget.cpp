@@ -14,6 +14,8 @@ Widget::Widget(QWidget *parent) :
     connect(myTcpSocket,SIGNAL(connected()),this,SLOT(beginLogin()));
     connect(this,&Widget::updateUserList,userWindow,&UserWindow::updateUserList);
     connect(this,&Widget::UserLogin,userWindow,&UserWindow::updateInfo);
+    connect(this,&Widget::offlineMessage,userWindow,&UserWindow::getOfflineMessage);
+    connect(this,&Widget::updateOfflineList,userWindow,&UserWindow::updateOfflineList);
 }
 
 Widget::~Widget()
@@ -36,6 +38,16 @@ void Widget::readMessage() {
 
     QString data = QString(myTcpSocket->readAll());
     qDebug() << data;
+    QStringList list = data.split("*");
+    for(int i = 0;i < list.count();i++) {
+        if(list[i]!=""){
+            qDebug() << "处理：" << list[i];
+            messageControl(list[i]);
+        }
+    }
+
+}
+void Widget::messageControl(QString &data) {
     QString type = data.split("#")[0];
     if(type == "login") {
         loginResult(data);
@@ -48,9 +60,12 @@ void Widget::readMessage() {
         loginWindow->hide();
         userWindow->show();
         emit updateUserList(data);
+    } else if(type == "offline") {
+        emit offlineMessage(data);
+    } else if(type == "offlinelist") {
+        emit updateOfflineList(data);
     }
 }
-
 void Widget::registerResult(QString &data) {
     QStringList list = data.split("#");
     if(list[1]=="true") {

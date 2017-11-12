@@ -13,6 +13,7 @@ public:
     ~Worker();
 signals:
     void newMessage(QString const &);
+    void offlineMessage(QString const &);
 public slots:
     void initialize();
     void getMessage();

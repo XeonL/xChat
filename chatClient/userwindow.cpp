@@ -7,6 +7,7 @@ UserWindow::UserWindow(xClientTcpSocket *socket,QWidget *parent) :
 {
     ui->setupUi(this);
     userList = new QHash<QString,QString>();
+    offlineList = new QVector<QString>;
     server = new tcpServer(this);
     connect(server,&tcpServer::newConnection,this,&UserWindow::newChatWindow1);
 }
@@ -75,6 +76,14 @@ void UserWindow::newChatWindow(QString const &user,QString const &ip) {
 
 void UserWindow::on_offlineMessageButton_clicked()
 {
+    QString name = ui->offlineUserName->text();
+    int i = offlineList->indexOf(name);
+    if(i < 0) {
+        QMessageBox::warning(nullptr,"error","该用户不存在或并非离线状态！",QMessageBox::Yes);
+        return;
+    }
+
+
     QDateTime current_date_time = QDateTime::currentDateTime();
     QString current_date = current_date_time.toString("yyyy-MM-dd hh:mm:ss ddd");
     QString str = QString("offline#");
@@ -97,7 +106,10 @@ void UserWindow::getOfflineMessage(const QString &str) {
 void UserWindow::updateOfflineList(const QString &data) {
     QStringList list = data.split("#");
     qDebug() << data << "..." << list.count();
+    ui->offlineUserList->clear();
+    offlineList->clear();
     for(int i = 1;i < list.count();i++) {
         ui->offlineUserList->addItem(list[i]);
+        offlineList->push_back(list[i]);
     }
 }

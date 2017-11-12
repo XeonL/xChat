@@ -8,6 +8,7 @@
 #include "tcpserver.h"
 #include "worker.h"
 #include "chatwindow.h"
+#include <QVector>
 namespace Ui {
 class UserWindow;
 }
@@ -36,6 +37,7 @@ private:
     Ui::UserWindow *ui;
     xClientTcpSocket *tcpSocket;
     QHash<QString,QString> *userList;
+    QVector<QString> *offlineList;
     tcpServer *server;
     QString myName;
 };

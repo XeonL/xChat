@@ -14,6 +14,7 @@ ChatWindow::ChatWindow(QString &username,QString anothername,QWidget *parent) :
 ChatWindow::~ChatWindow()
 {
     delete ui;
+    delete fileReceiver;
 }
 
 void ChatWindow::on_sendButton_clicked()
@@ -33,4 +34,18 @@ void ChatWindow::newMessageGet(const QString &message) {
         anotherUserName = list[0];
         ui->userName->setText(anotherUserName);
     }
+}
+
+
+
+void ChatWindow::on_sendFile_clicked()
+{
+    FileWindow *newFileWindow = new FileWindow(anotherIp);
+    newFileWindow->show();
+    newFileWindow->setAttribute(Qt::WA_DeleteOnClose);
+}
+void ChatWindow::setAnotherIp(const QString &ip) {
+    anotherIp = ip;
+
+    fileReceiver = new UrtReceiver(anotherIp);
 }

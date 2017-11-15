@@ -14,6 +14,7 @@ public:
 signals:
     void newMessage(QString const &);
     void offlineMessage(QString const &);
+    void anotherUserIp(QString const &);
 public slots:
     void initialize();
     void getMessage();

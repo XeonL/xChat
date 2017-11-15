@@ -25,7 +25,9 @@ void Worker::initialize() {
         tcpSocket->setSocketDescriptor(descriptor);
         anotherIp = tcpSocket->peerAddress().toString().mid(7);
         qDebug() << "get connect ip " << anotherIp;
+
     }
+    emit anotherUserIp(anotherIp);
     connect(tcpSocket,&QTcpSocket::disconnected,this,&Worker::connectMiss);
     connect(tcpSocket,&QTcpSocket::readyRead,this,&Worker::getMessage);
 }

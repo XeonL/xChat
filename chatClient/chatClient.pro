@@ -35,7 +35,11 @@ SOURCES += \
     userwindow.cpp \
     tcpserver.cpp \
     worker.cpp \
-    chatwindow.cpp
+    chatwindow.cpp \
+    filewindow.cpp \
+    udppkt.cpp \
+    urtreceiver.cpp \
+    urtsender.cpp
 
 HEADERS += \
         widget.h \
@@ -48,7 +52,11 @@ HEADERS += \
     userwindow.h \
     tcpserver.h \
     worker.h \
-    chatwindow.h
+    chatwindow.h \
+    filewindow.h \
+    udppkt.h \
+    urtreceiver.h \
+    urtsender.h
 
 FORMS += \
         widget.ui \
@@ -57,4 +65,5 @@ FORMS += \
     foundaccountwindow.ui \
     message.ui \
     userwindow.ui \
-    chatwindow.ui
+    chatwindow.ui \
+    filewindow.ui

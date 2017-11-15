@@ -9,6 +9,8 @@
 #include "worker.h"
 #include "chatwindow.h"
 #include <QVector>
+#include <filewindow.h>
+#include "urtreceiver.h"
 namespace Ui {
 class UserWindow;
 }
@@ -31,6 +33,10 @@ private slots:
 
     void on_offlineMessageButton_clicked();
 
+//    void on_fileButton_clicked();
+
+//    void on_setReceiver_clicked();
+
 private:
     void newChatWindow1(qintptr descriptor);
     void newChatWindow(QString const &,QString const &);
@@ -40,6 +46,7 @@ private:
     QVector<QString> *offlineList;
     tcpServer *server;
     QString myName;
+    UrtReceiver *receiver;
 };
 
 #endif // USERWINDOW_H

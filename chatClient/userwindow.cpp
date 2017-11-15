@@ -54,6 +54,7 @@ void UserWindow::newChatWindow1(qintptr descriptor) {
     connect(newWorker,&Worker::newMessage,newWindow,&ChatWindow::newMessageGet);
     connect(newWorker,&Worker::newMessage,newWindow,&ChatWindow::show);
     connect(newWindow,&ChatWindow::newMessageToSend,newWorker,&Worker::sendMessage);
+    connect(newWorker,&Worker::anotherUserIp,newWindow,&ChatWindow::setAnotherIp);
     newWindow->show();
     newWorker->moveToThread(thread);
     thread->start();
@@ -69,6 +70,7 @@ void UserWindow::newChatWindow(QString const &user,QString const &ip) {
     connect(newWorker,&Worker::newMessage,newWindow,&ChatWindow::newMessageGet);
     connect(newWorker,&Worker::newMessage,newWindow,&ChatWindow::show);
     connect(newWindow,&ChatWindow::newMessageToSend,newWorker,&Worker::sendMessage);
+    connect(newWorker,&Worker::anotherUserIp,newWindow,&ChatWindow::setAnotherIp);
     newWindow->show();
     newWorker->moveToThread(thread);
     thread->start();
@@ -113,3 +115,23 @@ void UserWindow::updateOfflineList(const QString &data) {
         offlineList->push_back(list[i]);
     }
 }
+
+//void UserWindow::on_fileButton_clicked()
+//{
+//    QString user = ui->usernameToChat->text();
+//    QString ip = userList->value(user);
+//    if(ip=="") {
+//        QMessageBox::warning(nullptr,"Warning","请输入在线用户的用户名！",QMessageBox::Yes);
+//    } else {
+//        FileWindow *newFileWindow = new FileWindow(ip);
+//        newFileWindow->setAttribute(Qt::WA_DeleteOnClose);
+//    }
+//}
+
+//void UserWindow::on_setReceiver_clicked()
+//{
+//    if(receiver) {
+//        delete receiver;
+//    }
+//    receiver = new UrtReceiver();
+//}

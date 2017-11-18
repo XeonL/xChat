@@ -3,7 +3,15 @@
 #include <QSqlQuery>
 #include <QHostAddress>
 #include "synchapi.h"
+#include <QCryptographicHash>
 //#include <QDebug>
+QString md5Hash(QString const &pwd) {
+    QByteArray byteArray;
+    byteArray.append(pwd);
+    QByteArray hash = QCryptographicHash::hash(byteArray,QCryptographicHash::Md5);
+    QString strMD5 = hash.toHex();
+    return strMD5;
+}
 Worker::Worker(qintptr descriptor,QObject *parent) :
     QObject(parent),socketDescriptor(descriptor),isLogined(false)
 {
@@ -49,7 +57,7 @@ void Worker::readData() {
     if(list[0] == "login") {
         qDebug() << "login";
         QString str = QString("select * from user where username = '%1' and password = '%2'").
-                arg(list[1]).arg(list[2]);
+                arg(list[1]).arg(md5Hash(list[2]));
         if(query.exec(str)) {
             if(query.next()) {
                 QString message = QString("login#true#%1").arg(list[1]);
@@ -76,7 +84,7 @@ void Worker::readData() {
         } else {
 
             QString str = QString("insert into user values (null,'%1','%2','%3','%4')").
-                    arg(list[1]).arg(list[2]).arg(list[3]).arg(list[4]);
+                    arg(list[1]).arg(md5Hash(list[2])).arg(list[3]).arg(list[4]);
             qDebug() << "register";
             qDebug() << str;
             if(query.exec(str)) {

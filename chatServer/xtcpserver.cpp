@@ -46,6 +46,7 @@ void xTcpServer::startServer() {
         qDebug() << "Listening to port " << this->serverPort() << "...";
         emit listenStatusChange(QString("Listening to port %1 ...").arg(this->serverPort()));
     }
+    broadcastList();
 }
 
 void xTcpServer::incomingConnection(qintptr socketDescriptor) {

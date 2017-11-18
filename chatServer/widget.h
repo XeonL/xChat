@@ -20,6 +20,7 @@ public:
 private slots:
     void on_listenButton_clicked();
     void updateListenStatus(const QString &);
+    void updateList(const QString &);
 
 
 private:
